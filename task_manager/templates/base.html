@@ -28,12 +28,17 @@
 
         <ul class="nav navbar-nav navbar-right">
           {% if user.is_authenticated %}
+            {% if user in team.members.all %}
+              <li><a class="navbar-link" href="#">My Team</a></li>
+            {% else %}
+              <li><a class="navbar-link" href="{% url 'teams:create' %}">Create Team</a></li>
+            {% endif %}
             <li><a class="navbar-link" href="#">Tasks</a></li>
-            <li><a class="navbar-link" href="#">Create Task</a></li>
+            <li><a class="navbar-link" href="#">Create New Task</a></li>
             <li><a class="navbar-link" href="{% url 'accounts:logout' %}">Logout</a></li>
           {% else %}
             <li><a class="navbar-link" href="{% url 'accounts:login' %}">Login</a></li>
-              <li><a class="navbar-link" href="{% url 'accounts:signup' %}">Sign Up</a></li>
+            <li><a class="navbar-link" href="{% url 'accounts:signup' %}">Sign Up</a></li>
           {% endif %}
         </ul>
 

@@ -1,0 +1,27 @@
+{% extends "teams/team_base.html" %}
+
+{% if user.is_authenticated %}
+
+{% block preteam %}
+
+<h1>{{ team.name }}</h1>
+<h1>Members Count: {{ team.members.count }}</h1>
+
+<div class="content">
+  {% if user == team.creator %}
+    <a href="{% url 'teams:add_member' slug=team.slug %}"
+      class="btn btn-lg btn-fill btn-info" >Add Member</a>
+  {% endif %}
+</div>
+
+{% endblock %}
+
+{% block team_content %}
+
+<div class="col-md-8">
+
+</div>
+
+{% endblock %}
+
+{% endif %}

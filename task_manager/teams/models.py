@@ -13,6 +13,8 @@ class Team(models.Model):
     name = models.CharField(max_length=255,unique=True)
     slug = models.SlugField(allow_unicode=True,unique=True)
     description = models.TextField(blank=True,default='')
+    creator = models.ForeignKey(User,related_name="creator",on_delete=models.CASCADE)
+    members = models.ManyToManyField(User,through="TeamMember")
 
     def __str__(self):
         return self.name
