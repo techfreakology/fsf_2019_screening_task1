@@ -5,22 +5,33 @@
 {% block preteam %}
 
 <h1>{{ team.name }}</h1>
-<h1>Members Count: {{ team.members.count }}</h1>
-
+<h2>Members Count: {{ team.memberships.count }}</h2>
+{% for teams in team.memberships.all %}
+  <h2>{{ teams.member }}</h2>
+{% endfor %}
 <div class="content">
   {% if user == team.creator %}
-    <a href="{% url 'teams:add_member' slug=team.slug %}"
-      class="btn btn-lg btn-fill btn-info" >Add Member</a>
+    <a href="{% url 'teams:add_member' %}" class="btn btn-lg btn-fill btn-info" >Add Member</a>
   {% endif %}
 </div>
+
 
 {% endblock %}
 
 {% block team_content %}
 
-<div class="col-md-8">
 
+{% if messages %}
+<div class="col-md-4">
+  <div class="alert alert-warning" role="alert">
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+  </div>
 </div>
+{% endif %}
 
 {% endblock %}
 

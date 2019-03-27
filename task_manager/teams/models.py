@@ -13,8 +13,7 @@ class Team(models.Model):
     name = models.CharField(max_length=255,unique=True)
     slug = models.SlugField(allow_unicode=True,unique=True)
     description = models.TextField(blank=True,default='')
-    creator = models.ForeignKey(User,related_name="creator",on_delete=models.CASCADE)
-    members = models.ManyToManyField(User,through="TeamMember")
+    creator = models.OneToOneField(User,related_name="userteam",on_delete=models.CASCADE,blank=True,null=True)
 
     def __str__(self):
         return self.name
@@ -28,18 +27,10 @@ class Team(models.Model):
 
 class TeamMember(models.Model):
     team = models.ForeignKey(Team,related_name="memberships",on_delete=models.CASCADE)
-    user = models.ForeignKey(User,related_name="user_team",on_delete=models.CASCADE)
-
-    MEMBERSHIP_CHOICES = (
-            ("LEADER", "Leader"),
-            ("MEMBER", "Member"),
-    )
-    membership_type = models.CharField(max_length=6,
-                                       choices=MEMBERSHIP_CHOICES,
-                                       default="MEMBER")
+    member = models.OneToOneField(User,related_name="members",on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.user.username
+        return self.team.name
 
     class Meta:
-        unique_together = ("team","user")
+        unique_together = ("team","member")
