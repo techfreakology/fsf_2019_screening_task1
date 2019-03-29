@@ -31,16 +31,16 @@
           {% if user.is_authenticated %}
             {% getteam as userteam %}
             {% if userteam %}
-              <li><a class="navbar-link" href="{% url 'teams:single' slug=userteam.slug %}">My Team</a></li>
+              <li><a class="navbar-link" href="{% url 'teams:single' slug=userteam.slug %}" class="btn btn-simple">My Team</a></li>
             {% else %}
-              <li><a class="navbar-link" href="{% url 'teams:create' %}">Create Team</a></li>
+              <li><a class="navbar-link" href="{% url 'teams:create' %}" class="btn btn-simple">Create Team</a></li>
             {% endif %}
-            <li><a class="navbar-link" href="#">Tasks</a></li>
-            <li><a class="navbar-link" href="#">Create New Task</a></li>
-            <li><a class="navbar-link" href="{% url 'accounts:logout' %}">Logout</a></li>
+            <li><a class="navbar-link" href="{% url 'tasks:all' %}" class="btn btn-simple">Tasks</a></li>
+            <li><a class="navbar-link" href="{% url 'tasks:create' %}" class="btn btn-simple">Create New Task</a></li>
+            <li><a class="navbar-link" href="{% url 'accounts:logout' %}" class="btn btn-simple">Logout</a></li>
           {% else %}
-            <li><a class="navbar-link" href="{% url 'accounts:login' %}">Login</a></li>
-            <li><a class="navbar-link" href="{% url 'accounts:signup' %}">Sign Up</a></li>
+            <li><a class="navbar-link" href="{% url 'accounts:login' %}" class="btn btn-simple">Login</a></li>
+            <li><a class="navbar-link" href="{% url 'accounts:signup' %}" class="btn btn-simple">Sign Up</a></li>
           {% endif %}
         </ul>
 

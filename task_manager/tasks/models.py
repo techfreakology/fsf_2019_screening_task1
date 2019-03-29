@@ -23,7 +23,7 @@ class Task(models.Model):
                               default="PLANNED")
 
     slug = models.SlugField(allow_unicode=True,unique=True)
-    creater = models.ForeignKey(User,related_name="tasks",on_delete=models.CASCADE)
+    creator = models.ForeignKey(User,related_name="tasks",on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now=True)
     assignees = models.ManyToManyField(User,through="TaskAssignees")
 
@@ -35,7 +35,7 @@ class Task(models.Model):
         super().save(*args,**kwargs)
 
     def get_absolute_url(self):
-        return reverse("tasks:single",kwargs={'slug':self.slug,'username':self.creater.username})
+        return reverse("tasks:single",kwargs={'slug':self.slug})
 
     class Meta:
         ordering = ["-created_at"]
@@ -43,10 +43,20 @@ class Task(models.Model):
 
 class TaskAssignees(models.Model):
     task = models.ForeignKey(Task,related_name="assigned",on_delete=models.CASCADE)
-    user = models.ForeignKey(User,related_name="user_tasks",on_delete=models.CASCADE)
+    assignee = models.ForeignKey(User,related_name="user_tasks",on_delete=models.CASCADE)
 
     def __str__(self):
         return self.user.username
 
     class Meta:
-        unique_together = ("task","user")
+        unique_together = ("task","assignee")
+
+class TaskTeam(models.Model):
+    task = models.ForeignKey(Task,related_name="tasks",on_delete=models.CASCADE)
+    team = models.ForeignKey(Team,related_name="team",on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.team.name
+
+    class Meta:
+        unique_together = ("team","task")

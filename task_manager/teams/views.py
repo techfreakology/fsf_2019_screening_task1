@@ -46,13 +46,13 @@ class AddMember(LoginRequiredMixin,generic.edit.FormView):
         team = get_object_or_404(Team,creator=self.request.user)
 
 
-        memberteam = TeamMember.objects.filter(member=member)[0].team
         try:
             TeamMember.objects.create(member=member,team=team)
         except IntegrityError:
+            memberteam = TeamMember.objects.filter(member=member)[0].team
             messages.warning(self.request,("{} is already a member of {}".format(member,memberteam)))
         else:
-            messages.success(self.request,"{} is now a member of the {} group.".format(member,membersteam))
+            messages.success(self.request,"{} is now a member of the {} group.".format(member,team))
 
         self.success_url = reverse('teams:single',kwargs={'slug':team.slug})
         return super(AddMember, self).form_valid(form)

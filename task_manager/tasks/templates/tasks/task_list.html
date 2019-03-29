@@ -1,0 +1,41 @@
+{% extends "tasks/task_base.html" %}
+
+{% block pretask %}
+<div class="col-md-4">
+  {% if request.user.is_authenticated %}
+  <div class="card card-with-shadow">
+    <div class="content">
+      {% if request.user.members.team %}
+      <h3>Team Name: <a href="{% url 'teams:single' slug=request.user.members.team.slug %}">{{ request.user.members.team }}</a></h3>
+      {% else %}
+      <h3>Your tasks</h3>
+      {% endif %}
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block posttask %}
+<div class="col-md-8">
+  <div class="list-group">
+    {% if task_team %}
+
+      <!-- if user is member of a team then show all the tasks
+           associated with that team-->
+      {% for taskteam in task_team %}
+        {% with task=taskteam.task %}
+          {% include "tasks/_task.html" %}
+        {% endwith %}
+      {% endfor %}
+
+    {% else %}
+      <!-- else display only his tasks, which he has created -->
+      {% for task in request.user.tasks.all %}
+        {% include "tasks/_task.html" %}
+      {% endfor %}
+
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

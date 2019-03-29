@@ -11,7 +11,7 @@ def getteam(context):
     try:
         request = context['request']
         user = User.objects.get(username=request.user.username)
-        team = user.userteam
+        team = user.members.team
     except ObjectDoesNotExist:
         team = None
     return team

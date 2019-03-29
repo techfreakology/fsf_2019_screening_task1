@@ -3,24 +3,38 @@
 {% if user.is_authenticated %}
 
 {% block preteam %}
-
-<h1>{{ team.name }}</h1>
-<h2>Members Count: {{ team.memberships.count }}</h2>
-{% for teams in team.memberships.all %}
-  <h2>{{ teams.member }}</h2>
-{% endfor %}
-<div class="content">
-  {% if user == team.creator %}
-    <a href="{% url 'teams:add_member' %}" class="btn btn-lg btn-fill btn-info" >Add Member</a>
-  {% endif %}
+<div class="col-md-4">
+  <div class="card card-with-shadow">
+    <div class="content">
+      <h3>Team Name: <a href="{% url 'teams:single' slug=team.slug %}">{{ team.name }}</a></h3>
+    </div>
+  </div>
+  <div class="content">
+    {% if user == team.creator %}
+      <a href="{% url 'teams:add_member' %}" class="btn btn-lg btn-fill btn-info" >Add Member</a>
+    {% endif %}
+  </div>
 </div>
-
-
 {% endblock %}
 
 {% block team_content %}
+<div class="col-md-8">
+  <span class="badge">{{ team.memberships.count }}</span> <strong>Member{{ team.memberships.count|pluralize }}</strong>
+  <div class="list-group">
+    {% for team in team.memberships.all %}
+      <div class="list-group-item">
+        {{ team.member }}
+        {{ team.creator }}
+        {% if team.member == team.team.creator %}
+          (Leader)
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
 
-
+{% block postteam %}
 {% if messages %}
 <div class="col-md-4">
   <div class="alert alert-warning" role="alert">
@@ -32,7 +46,6 @@
   </div>
 </div>
 {% endif %}
-
 {% endblock %}
 
 {% endif %}

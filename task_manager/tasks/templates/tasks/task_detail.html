@@ -1,0 +1,27 @@
+{% extends "tasks/task_base.html" %}
+
+{% block task_content %}
+<div class="col-md-8">
+  <h2>{{ task.title }}</h2>
+  <h4>{{ task.description }}</h4>
+  <div class="row">
+    <div class="col-md-4">
+      <h4><strong>Creator: </strong>{{ task.creator }}</h4>
+    </div>
+    <div class="col-md-4">
+      <h4><strong>Status: </strong>{{ task.status }}</h4>
+    </div>
+  </div>
+</div>
+<div class="col-md-4">
+  <h4><strong>Assignee{{ task.assignees.count|pluralize }}:</strong></h4>
+  {% for assignee in task.assignees.all %}
+    <div class="list-group">
+      <div class="list-group-item">
+
+        {{ assignee }}
+      </div>
+    </div>
+  {% endfor %}
+</div>
+{% endblock %}

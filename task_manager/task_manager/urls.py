@@ -26,4 +26,5 @@ urlpatterns = [
     url(r'^test/$',views.TestPage.as_view(),name='test'),
     url(r'^thanks/$',views.ThanksPage.as_view(),name='thanks'),
     url(r'^teams/',include('teams.urls',namespace='teams')),
+    url(r'^tasks/',include('tasks.urls',namespace='tasks')),
 ]
