@@ -1,24 +1,36 @@
 {% extends "teams/team_base.html" %}
+{% load bootstrap3 %}
 
 {% block preteam %}
+<!-- A user will be able to see his team details if he belongs to a team -->
 {% if request.user.members.team == team %}
 <div class="col-md-4">
+
+  <!-- Team details -->
   <div class="card card-with-shadow">
     <div class="content">
       <h3>Team Name: <a href="{% url 'teams:single' slug=team.slug %}">{{ team.name }}</a></h3>
     </div>
   </div>
+
+  <!-- If the user is creator of the team allow him to add members to his team -->
   <div class="content">
     {% if user == team.creator %}
-      <a href="{% url 'teams:add_member' %}" class="btn btn-lg btn-fill btn-info" >Add Member</a>
+      <form action="{% url 'teams:add_member' %}" method="POST">
+        {% csrf_token %}
+        {% bootstrap_form add_member_form %}
+        <input type="submit" class="btn btn-primary btn-large" value="Add">
+      </form>
     {% endif %}
   </div>
+
 </div>
 {% else %}
 <h1>You are not a member of this Team</h1>
 {% endif %}
 {% endblock %}
 
+<!-- List of members of the team of current user -->
 {% block team_content %}
 {% if request.user.members.team == team %}
 <div class="col-md-4">
@@ -38,6 +50,7 @@
 {% endif %}
 {% endblock %}
 
+<!-- User friendly error messages -->
 {% block postteam %}
 {% if messages %}
 <div class="col-md-4">

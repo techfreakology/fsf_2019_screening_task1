@@ -60,3 +60,19 @@ class TaskTeam(models.Model):
 
     class Meta:
         unique_together = ("team","task")
+
+class Comment(models.Model):
+    message = models.TextField()
+    user = models.ForeignKey(User,related_name="user_comments",on_delete=models.CASCADE)
+    task = models.ForeignKey(Task,related_name="task_comments",on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.user.username
+
+    def get_absolute_url(self):
+        return reverse("tasks:single",kwargs={'slug':task.slug})
+
+    class Meta:
+        ordering = ["-created_at"]
+        unique_together = ("message","user")
