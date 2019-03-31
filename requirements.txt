@@ -1,0 +1,20 @@
+Prerequisites
+A non-root user account with sudo privileges set up on a Debian or Ubuntu Linux server.
+
+Step 1 — Install Python and pip
+$ sudo apt-get update && sudo apt-get -y upgrade
+$ sudo apt-get install python3
+$ sudo apt-get install -y python3-pip
+
+Step 2 — Install virtualenv
+$ pip3 install virtualenv
+
+Step 3 — Install Django
+$ mkdir django-apps
+$ cd django-apps
+$ virtualenv env
+$ . env/bin/activate
+(env)$  pip install django
+(env)$  git clone https://github.com/techfreakology/fsf_2019_screening_task1.git
+(env)$  cd fsf_2019_screening_task1/task_manager
+(env)$  python3 manage.py runserver
