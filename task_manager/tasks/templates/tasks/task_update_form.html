@@ -1,11 +1,10 @@
 {% extends "tasks/task_base.html" %}
-{% load bootstrap3 %}
 
 {% if user.is_authenticated %}
 {% block task_content %}
 <form method="post">
   {% csrf_token %}
-  {% bootstrap_form form %}
+  {{ form }}
   <input type="submit" name="" value="Confirm" class="btn btn-warning">
 </form>
 {% endblock %}

@@ -1,5 +1,4 @@
 {% extends "tasks/task_base.html" %}
-{% load bootstrap3 %}
 {% load tz %}
 
 {% block task_content %}
@@ -35,7 +34,7 @@
   <div class="col-md-9">
     <form action="{% url 'tasks:comment' slug=task.slug username=request.user %}" method="POST">
       {% csrf_token %}
-      {% bootstrap_form comment_form %}
+      {{ comment_form }}
       <input type="submit" name="" value="Post Comment" class="btn btn-primary btn-large">
     </form>
   </div>
@@ -88,7 +87,7 @@
     <!-- Assign task form -->
     <form action="{% url 'tasks:assign' slug=task.slug %}" method="post">
     {% csrf_token %}
-    {% bootstrap_form assign_task_form %}
+    {{ assign_task_form }}
     <input type="submit" value="Assign" class="btn btn-primary">
     </form>
 

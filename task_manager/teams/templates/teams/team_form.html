@@ -1,5 +1,4 @@
 {% extends "teams/team_base.html" %}
-{% load bootstrap3 %}
 
 {% block team_content %}
 
@@ -7,7 +6,7 @@
 
 <form action="{% url 'teams:create' %}" method="post">
   {% csrf_token %}
-  {% bootstrap_form form %}
+  {{ form }}
   <input type="submit" class="btn btn-primary btn-large" value="Submit">
 </form>
 
