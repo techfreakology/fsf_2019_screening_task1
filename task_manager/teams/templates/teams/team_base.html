@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 
+{% if user.is_authenticated %}
 <div class="container">
   <div class="row">
     {% block preteam %}{% endblock %}
@@ -8,5 +9,5 @@
     {% block postteam %}{% endblock %}
   </div>
 </div>
-
+{% endif %}
 {% endblock %}

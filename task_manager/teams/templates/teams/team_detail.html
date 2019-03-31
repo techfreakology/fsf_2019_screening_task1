@@ -1,8 +1,7 @@
 {% extends "teams/team_base.html" %}
 
-{% if user.is_authenticated %}
-
 {% block preteam %}
+{% if request.user.members.team == team %}
 <div class="col-md-4">
   <div class="card card-with-shadow">
     <div class="content">
@@ -15,10 +14,14 @@
     {% endif %}
   </div>
 </div>
+{% else %}
+<h1>You are not a member of this Team</h1>
+{% endif %}
 {% endblock %}
 
 {% block team_content %}
-<div class="col-md-8">
+{% if request.user.members.team == team %}
+<div class="col-md-4">
   <span class="badge">{{ team.memberships.count }}</span> <strong>Member{{ team.memberships.count|pluralize }}</strong>
   <div class="list-group">
     {% for team in team.memberships.all %}
@@ -32,6 +35,7 @@
     {% endfor %}
   </div>
 </div>
+{% endif %}
 {% endblock %}
 
 {% block postteam %}
@@ -47,5 +51,3 @@
 </div>
 {% endif %}
 {% endblock %}
-
-{% endif %}

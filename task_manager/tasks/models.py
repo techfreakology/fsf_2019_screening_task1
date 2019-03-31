@@ -43,13 +43,13 @@ class Task(models.Model):
 
 class TaskAssignees(models.Model):
     task = models.ForeignKey(Task,related_name="assigned",on_delete=models.CASCADE)
-    assignee = models.ForeignKey(User,related_name="user_tasks",on_delete=models.CASCADE)
+    user = models.ForeignKey(User,related_name="user_task",on_delete=models.CASCADE)
 
     def __str__(self):
         return self.user.username
 
     class Meta:
-        unique_together = ("task","assignee")
+        unique_together = ("task","user")
 
 class TaskTeam(models.Model):
     task = models.ForeignKey(Task,related_name="tasks",on_delete=models.CASCADE)

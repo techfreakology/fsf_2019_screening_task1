@@ -1,0 +1,14 @@
+{% extends "tasks/task_base.html" %}
+{% load bootstrap3 %}
+
+{% block task_content %}
+
+<h4>Assignees</h4>
+{{ slug }}
+<form action="{% url 'tasks:assign' %}" method="POST">
+  {% csrf_token %}
+  {% bootstrap_form form %}
+  <input type="submit" class="btn btn-primary btn-large" value="Assign">
+</form>
+
+{% endblock %}

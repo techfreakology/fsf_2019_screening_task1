@@ -19,10 +19,10 @@ User = get_user_model()
 
 # Method to update related models
 def updateDependentModels(member,team):
-    TeamMember.objects.create(member=member,team=team)
+    TeamMember.objects.get_or_create(member=member,team=team)
     for task in member.tasks.all():
         try:
-            TaskTeam.objects.create(task=task,team=team)
+            TaskTeam.objects.get_or_create(task=task,team=team)
         except IntegrityError:
             pass
 
@@ -45,12 +45,12 @@ class CreateTeam(LoginRequiredMixin,generic.CreateView):
 
 
 
-class SingleTeam(generic.DetailView):
+class SingleTeam(LoginRequiredMixin,generic.DetailView):
     model = Team
 
 #add member
 class AddMember(LoginRequiredMixin,generic.edit.FormView):
-    template_name = "teams/teamMember_form.html"
+    template_name = "teams/team_member_form.html"
     form_class = AddMemberForm
 
     def form_valid(self,form):

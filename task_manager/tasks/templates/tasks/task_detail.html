@@ -1,27 +1,61 @@
 {% extends "tasks/task_base.html" %}
+{% load bootstrap3 %}
+{% load tz %}
 
 {% block task_content %}
-<div class="col-md-8">
+{% if task.creator == request.user or task.creator.members.team == request.user.members.team %}
+<div class="col-md-9">
   <h2>{{ task.title }}</h2>
   <h4>{{ task.description }}</h4>
   <div class="row">
-    <div class="col-md-4">
-      <h4><strong>Creator: </strong>{{ task.creator }}</h4>
+    <div class="col-md-3">
+      <h5><strong>Created by: </strong>{% if request.user == task.creator %}You{% else %}{{ task.creator }}{% endif %}</h5>
     </div>
-    <div class="col-md-4">
-      <h4><strong>Status: </strong>{{ task.status }}</h4>
+    <div class="col-md-3">
+      <h5><strong>Status: </strong>{{ task.status }}</h5>
+    </div>
+    <div class="col-md-6">
+      <h5><strong>Created on: </strong>{{ task.created_at|localtime }}</h5>
     </div>
   </div>
 </div>
-<div class="col-md-4">
-  <h4><strong>Assignee{{ task.assignees.count|pluralize }}:</strong></h4>
-  {% for assignee in task.assignees.all %}
+<div class="col-md-3">
+  <h4>
+    <strong>Assignee{{ task.assignees.count|pluralize }}:</strong>
+    {% if user == task.creator %}
+    <a
+      {% if not user.members.team %}
+        title="Create team to assign tasks"
+      {% else %}
+        href="{% url 'tasks:assign' %}"
+      {% endif %}
+    ><span class="glyphicon glyphicon-edit" ></span></a>
+    {% endif %}
+  </h4>
     <div class="list-group">
+      {% for assignee in task.assignees.all %}
       <div class="list-group-item">
-
         {{ assignee }}
       </div>
+      {% endfor %}
     </div>
-  {% endfor %}
 </div>
+{% else %}
+<h1>You are not authorized to view this task</h1>
+{% endif %}
+{% endblock %}
+
+
+{% block posttask %}
+{% if messages %}
+<div class="col-md-4">
+  <div class="alert alert-warning" role="alert">
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+  </div>
+</div>
+{% endif %}
 {% endblock %}

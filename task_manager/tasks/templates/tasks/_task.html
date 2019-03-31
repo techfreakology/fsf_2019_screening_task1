@@ -1,12 +1,19 @@
+{% load tz %}
 <a class="list-group-item" href="{% url 'tasks:single' slug=task.slug %}">
   <h3 class="title list-group-item-heading">{{ task.title }}</h3>
   <div class="list-group-item-text container-fluid">
     <div class="row">
-      <div class="col-md-4">
-        <span>Creator: {{ task.creator }}</span>
+      <div class="col-md-3">
+        <span>Created by: {% if request.user == task.creator %}You{% else %}{{ task.creator }}{% endif %}</span>
       </div>
-      <div class="col-md-4">
+      <div class="col-md-3">
         <span>Status: {{ task.status }}</span>
+      </div>
+      <div class="col-md-3">
+        <strong><span class="badge">{{ task.assignees.count }}</span></strong>Assignee{{ task.assignees.count|pluralize }}
+      </div>
+      <div class="col-md-3">
+        <span>Created on: {{ task.created_at|localtime }}</span>
       </div>
     </div>
   </div>

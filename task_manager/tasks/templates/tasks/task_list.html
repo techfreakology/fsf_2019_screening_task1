@@ -1,7 +1,8 @@
 {% extends "tasks/task_base.html" %}
 
+<!-- Team Name and url -->
 {% block pretask %}
-<div class="col-md-4">
+<div class="col-md-3">
   {% if request.user.is_authenticated %}
   <div class="card card-with-shadow">
     <div class="content">
@@ -16,8 +17,9 @@
 </div>
 {% endblock %}
 
+<!-- Tasks list -->
 {% block posttask %}
-<div class="col-md-8">
+<div class="col-md-9">
   <div class="list-group">
     {% if task_team %}
 
