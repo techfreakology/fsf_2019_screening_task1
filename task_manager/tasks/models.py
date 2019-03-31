@@ -62,17 +62,22 @@ class TaskTeam(models.Model):
         unique_together = ("team","task")
 
 class Comment(models.Model):
-    message = models.TextField()
+    message = models.TextField(unique=False)
     user = models.ForeignKey(User,related_name="user_comments",on_delete=models.CASCADE)
     task = models.ForeignKey(Task,related_name="task_comments",on_delete=models.CASCADE)
+
+    slug = models.SlugField(allow_unicode=True,unique=True)
     created_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.user.username
+
+    def save(self,*args,**kwargs):
+        self.slug = slugify(self.message + self.user.username + self.task.title)
+        super().save(*args,**kwargs)
 
     def get_absolute_url(self):
         return reverse("tasks:single",kwargs={'slug':task.slug})
 
     class Meta:
         ordering = ["-created_at"]
-        unique_together = ("message","user")

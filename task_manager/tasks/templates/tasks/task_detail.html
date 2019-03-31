@@ -90,7 +90,8 @@
     {{ assign_task_form }}
     <input type="submit" value="Assign" class="btn btn-primary">
     </form>
-
+    {% endif %}
+    
     <!-- Error messages to make site user friendly -->
     {% if messages %}
     <div class="col-md-12">
@@ -102,7 +103,6 @@
         </ul>
       </div>
     </div>
-    {% endif %}
     {% endif %}
 
 </div>

@@ -120,7 +120,7 @@ class CreateComment(LoginRequiredMixin,generic.edit.FormView):
                 messages.warning(self.request,("you are not authorized to comment on this task, contact {}".format(task.creator)))
 
         except IntegrityError:
-            messages.warning(self.request,("This comment already exists"))
+            messages.warning(self.request,("This comment already exists on {} by {}".format(task.title,user)))
         except AttributeError:
             if task.creator == user:
                 Comment.objects.get_or_create(
