@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.mixins import (LoginRequiredMixin,
                                         PermissionRequiredMixin)
 
+from django.core.exceptions import ObjectDoesNotExist
 from django.urls import reverse
 from django.views import generic
 from django.db import IntegrityError
@@ -56,13 +57,15 @@ class AddMember(LoginRequiredMixin,generic.edit.FormView):
     template_name = "test.html"
 
     def form_valid(self,form):
-        member = get_object_or_404(User,username=form.cleaned_data["username"])
         team = get_object_or_404(Team,creator=self.request.user)
         try:
+            member = User.objects.get(username=form.cleaned_data["username"])
             updateDependentModels(member,team)
         except IntegrityError:
             memberteam = TeamMember.objects.filter(member=member)[0].team
             messages.warning(self.request,("{} is already a member of {}".format(member,memberteam)))
+        except ObjectDoesNotExist:
+            messages.warning(self.request,("user does not exists"))
         else:
             messages.success(self.request,"{} is now a member of the {} group.".format(member,team))
 

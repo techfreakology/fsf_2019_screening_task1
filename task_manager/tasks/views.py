@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.mixins import (LoginRequiredMixin,
                                         PermissionRequiredMixin)
 
+from django.core.exceptions import ObjectDoesNotExist
 from django.urls import reverse,reverse_lazy
 from django.views import generic
 from django.db import IntegrityError
@@ -78,9 +79,9 @@ class AssignTask(LoginRequiredMixin,generic.edit.FormView):
         return reverse_lazy('tasks:single',kwargs={'slug':self.kwargs['slug']})
 
     def form_valid(self,form):
-        user = get_object_or_404(User,username=form.cleaned_data["username"])
-        task = get_object_or_404(Task,slug=self.kwargs["slug"])
         try:
+            user = User.objects.get(username=form.cleaned_data["username"])
+            task = get_object_or_404(Task,slug=self.kwargs["slug"])
             if user.members and user.members.team == self.request.user.members.team:
                 TaskAssignees.objects.create(
                     task = task,
@@ -95,8 +96,9 @@ class AssignTask(LoginRequiredMixin,generic.edit.FormView):
             messages.warning(self.request,("{} is already assigned {}".format(user,task)))
         except AttributeError:
             messages.warning(self.request,("{} is not in your team".format(user)))
-        except User.DoesNotExist:
+        except ObjectDoesNotExist:
             messages.warning(self.request,("user does not exists"))
+
         return super(AssignTask, self).form_valid(form)
 
 class CreateComment(LoginRequiredMixin,generic.edit.FormView):
