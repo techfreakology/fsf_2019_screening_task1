@@ -53,6 +53,7 @@ class SingleTeam(LoginRequiredMixin,generic.DetailView):
 #add member
 class AddMember(LoginRequiredMixin,generic.edit.FormView):
     form_class = AddMemberForm
+    template_name = "test.html"
 
     def form_valid(self,form):
         member = get_object_or_404(User,username=form.cleaned_data["username"])

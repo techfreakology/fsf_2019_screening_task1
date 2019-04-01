@@ -72,6 +72,7 @@ class SingleTask(LoginRequiredMixin,generic.DetailView):
 
 class AssignTask(LoginRequiredMixin,generic.edit.FormView):
     form_class = AssignTaskForm
+    template_name = "test.html"
 
     def get_success_url(self, **kwargs):
         return reverse_lazy('tasks:single',kwargs={'slug':self.kwargs['slug']})
